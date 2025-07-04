@@ -1,4 +1,4 @@
-name: Demo - Pipeline rodando apenas em stage
+name: Demo - Workflow rodando apenas em stage
 on: 
   push:
     branches:

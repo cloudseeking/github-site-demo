@@ -1,10 +1,8 @@
-name: Demo - Pipeline rodando apenas em production
+name: Demo - Workflow rodando apenas em production
 on: 
   push:
     branches-ignore:
       - main
-    tags:
-      - v*-stage
 jobs:
   run-tests:
     runs-on: ubuntu-latest
