@@ -1,12 +1,11 @@
-name: Demo - Workflow rodando apenas em production
+name: branch main
 on: 
   push:
     branches:
       - main
 jobs:
-  run-tests:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -16,10 +15,19 @@ jobs:
 
       - name: Run tests
         run: npm test
-  deploy:
-    needs: [run-tests]
-    runs-on: ubuntu-latest
 
+      - name: Build app
+        run: npm run build
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-site
+          path: dist/
+          
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
