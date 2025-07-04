@@ -28,4 +28,4 @@ jobs:
         run: echo "Building app..."
 
       - name: Deploy to production
-        run: echo "Deploying to production..."
+        run: echo "Deploying to production...."
