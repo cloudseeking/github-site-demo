@@ -6,6 +6,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      versao: ${{ steps.docker_build.outputs.tag }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,24 +21,16 @@ jobs:
       - name: Build app
         run: npm run build
       
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with: 
-          name: build-site
-          path: dist/
+      - name: Build Docker image
+        run: |
+          TAG=$(date +'%Y-%m-%d-%H-%M-%S')
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+          docker build -t github-actions-site:$TAG .
+        id: docker_build
           
   deploy:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build-site
-          path: download-data/
-      
-      - name: Display structure of downloaded files
-        run: ls -R download-data
-      
       - name: Deploy to server
         run: echo "Deploying to server"
